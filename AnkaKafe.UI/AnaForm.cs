@@ -47,11 +47,11 @@ namespace AnkaKafe.UI
         {
             if (e.ClickedItem == tsmiUrunler)
             {
-                new UrunlerForm().ShowDialog();
+                new UrunlerForm(db).ShowDialog();
             }
             else if (e.ClickedItem == tsmiGecmisSiparisler)
             {
-                new GecmisSiparisForm().ShowDialog();
+                new GecmisSiparisForm(db).ShowDialog();
             }
         }
 
@@ -72,7 +72,15 @@ namespace AnkaKafe.UI
             //todo: bu siparişi başka bir formda aç
 
             SiparisForm siparisForm = new SiparisForm(db,siparis);
-            siparisForm.Show();   //ShowDialog yazmamamızın sebebi basşka masa seçilmez
+            // siparisForm.Show();   //ShowDialog yazmamamızın sebebi basşka masa seçilmez
+            siparisForm.ShowDialog();
+
+            //siparis form kapandıktan sonra sipariş durum kontrol et
+
+            if (siparis.Durum!= SiparisDurum.Aktif)
+            {
+                lvi.ImageKey = "bos";
+            }
         }
 
         private Siparis SiparisBul(int masaNo)
