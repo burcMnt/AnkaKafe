@@ -21,6 +21,7 @@ namespace AnkaKafe.UI
             InitializeComponent();
             masalarImageList.Images.Add("bos", Resource.dinner_table);
             masalarImageList.Images.Add("dolu", Resource.third_party);
+              Icon = Resource.icon;
             MasalarıOlustur();
         }
 
@@ -33,7 +34,7 @@ namespace AnkaKafe.UI
         private void MasalarıOlustur()
         {
             ListViewItem lvi;
-            for (int i = 0; i <= db.MasaAdedi; i++)
+            for (int i = 1; i <= db.MasaAdedi; i++)
             {
                 lvi = new ListViewItem();
                 lvi.Tag = i;//masa noyu herbir ügenin Tag property'sinde saklayalım
@@ -64,22 +65,40 @@ namespace AnkaKafe.UI
             //todo: eger bu masada önceden bir sipariş yoksa oluştur
             Siparis siparis = SiparisBul(masaNo);
 
-            if (siparis==null)
+            if (siparis == null)
             {
                 siparis = new Siparis() { MasaNo = masaNo };
                 db.AktifSiparisler.Add(siparis);
             }
             //todo: bu siparişi başka bir formda aç
 
-            SiparisForm siparisForm = new SiparisForm(db,siparis);
+            SiparisForm siparisForm = new SiparisForm(db, siparis);
             // siparisForm.Show();   //ShowDialog yazmamamızın sebebi basşka masa seçilmez
+
+            siparisForm.MasaTasindi += SiparisForm_MasaTasindi;
             siparisForm.ShowDialog();
 
             //siparis form kapandıktan sonra sipariş durum kontrol et
 
-            if (siparis.Durum!= SiparisDurum.Aktif)
+            if (siparis.Durum != SiparisDurum.Aktif)
             {
                 lvi.ImageKey = "bos";
+            }
+        }
+
+        private void SiparisForm_MasaTasindi(object sender, MasaTasindiEventArgs e)
+        {
+            foreach (ListViewItem lvi in lvwMasalar.Items)
+            {
+                int masaNo = (int)lvi.Tag;
+                if (masaNo==e.EskiMasaNo)
+                {
+                    lvi.ImageKey = "bos";
+                }
+                else if (masaNo==e.YeniMasaNo)
+                {
+                    lvi.ImageKey = "dolu";
+                }
             }
         }
 
