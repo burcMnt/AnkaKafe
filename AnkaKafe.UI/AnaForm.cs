@@ -59,7 +59,7 @@ namespace AnkaKafe.UI
             for (int i = 1; i <= db.MasaAdedi; i++)
             {
                 lvi = new ListViewItem();
-                lvi.Tag = i;//masa noyu herbir ügenin Tag property'sinde saklayalım
+                lvi.Tag = i;//masa noyu herbir ögenin Tag property'sinde saklayalım
                 lvi.Text = "Masa" + i;
                 lvi.ImageKey = MasaDolumu(i) ? "dolu":"bos";
                 lvwMasalar.Items.Add(lvi);
@@ -154,7 +154,7 @@ namespace AnkaKafe.UI
         private void VerileriKaydet()
         {
             var options = new JsonSerializerOptions() { WriteIndented = true }; //json okunaklı (indendation) kaydeder
-            string json = JsonSerializer.Serialize(db);
+            string json = JsonSerializer.Serialize(db,options);
             File.WriteAllText("veri.json", json);
         }
     }

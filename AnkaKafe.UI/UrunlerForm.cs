@@ -45,7 +45,7 @@ namespace AnkaKafe.UI
                 BirimFiyat = nudBirimFiyat.Value
             });
             }
-            else   //düzenlenen varsa agüncelle
+            else   //düzenlenen varsa güncelle
             {
                 _duzenlenen.UrunAd = urunAd;
                 _duzenlenen.BirimFiyat = nudBirimFiyat.Value;
@@ -89,6 +89,7 @@ namespace AnkaKafe.UI
             if (dgvUrunler.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Ürün güncellemek için önce ürün seçmelisiniz.");
+                return;
             }
             _duzenlenen = (Urun)dgvUrunler.SelectedRows[0].DataBoundItem;
             txtUrunAd.Text = _duzenlenen.UrunAd;
